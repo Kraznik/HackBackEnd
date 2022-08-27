@@ -8,7 +8,7 @@ const rpc = new providers.JsonRpcProvider(config.alchemyUrl);
 
 const wallet1 = new Wallet(config.privateKey.ethBcnMoments, rpc);
 const wallet2 = new Wallet(config.privateKey.dgMoments, rpc);
-const wallet3 = new Wallet(config.privateKey.ethCcMoments, rpc);
+const wallet3 = new Wallet(config.privateKey.creator, rpc);
 
 const Diamond1 = new Contract(contractAddress, ABI, wallet1);
 const Diamond2 = new Contract(contractAddress, ABI, wallet2);
