@@ -2,7 +2,7 @@ require("hardhat");
 const buyLazyMint = require("../utils/contractFunctions/buyLazyMint");
 const mintNfts = require("../utils/contractFunctions/mintNfts");
 
-const mintEthccMoments = async (req, res, next) => {
+const mintMoments = async (req, res, next) => {
   try {
     var { walletAddresses, nftTypeId, params } = req.body;
     var { category } = req.params; // category will be ethcc for now in this endpoint
@@ -28,4 +28,4 @@ const mintEthccMoments = async (req, res, next) => {
   }
 };
 
-module.exports = mintEthccMoments;
+module.exports = mintMoments;
