@@ -14,7 +14,6 @@ var auth = require("../middleware/auth");
 //   require("../controllers/mintMoments")
 // );
 
-
 router.patch("/ethMoments", auth, require("../controllers/ethMoments.js"));
 
 router.get(
@@ -23,6 +22,6 @@ router.get(
   require("../controllers/ethMomentsLeaderboard.js")
 );
 
-
+router.get("/getAccessToken", require("../controllers/apiAuth"));
 
 module.exports = router;

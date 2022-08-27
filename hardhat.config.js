@@ -25,29 +25,16 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 // };
 
 module.exports = {
-  defaultNetwork:
-    process.env.NETWORK === "testnet" ? "mumbaiTestnet" : "polygon",
+  defaultNetwork: process.env.NETWORK === "testnet" ? "mumbai" : "polygon",
   networks: {
     hardhat: {},
     polygon: {
       url: config.alchemyUrl,
-      accounts: [
-        config.privateKey.scavHunt,
-        config.privateKey.speakersNft,
-        config.privateKey.ethBcnMoments,
-        config.privateKey.dgMoments,
-        config.privateKey.poap,
-      ],
+      accounts: [config.privateKey.ethBcnMoments, config.privateKey.dgMoments],
     },
-    mumbaiTestnet: {
+    mumbai: {
       url: config.alchemyUrl,
-      accounts: [
-        config.privateKey.scavHunt,
-        config.privateKey.speakersNft,
-        config.privateKey.ethBcnMoments,
-        config.privateKey.dgMoments,
-        config.privateKey.poap,
-      ],
+      accounts: [config.privateKey.ethBcnMoments, config.privateKey.dgMoments],
     },
   },
   solidity: {
