@@ -5,29 +5,72 @@ var db  = require('../models')
 module.exports = async function(req,res)
 {
 
-    var arr = req.body.data;
+    let {addresses, creatorAddress} = req.body.data;
 
-    if(arr.length)
-    {   
+    if(!addresses || !creatorAddress)
+    {
+        res.status(400).send({error: "Invalid Payload"})
+    }
 
-        var sql = "UPDATE ETHMoments set count =count+1,updatedAt = CURRENT_TIMESTAMP where ticketId in (";
-
-        for(i=0; i<arr.length; i++)
+    if(addresses.length)
+    {
+        for(i=0; i<addresses.length; i++)
         {
-            if(i<arr.length-1)
+
+            var checkWallet = await ETHMoment.findAll({where:{address: addresses[i]}});
+
+            if(checkWallet.length)
             {
-                sql = sql+arr[i]+","
+
+                var tempCount = checkWallet[0].count;
+                var tempCreations = checkWallet[0].creations;
+                var tempTagged = checkWallet[0].tagged;
+
+                if(addresses[i] == creatorAddress)
+                {
+                    var updateWallet = await ETHMoment.update({
+                        count: tempCount+1,
+                        creations: tempCreations+1,
+                        tagged: tempTagged
+                    },{where:{address: addresses[i]}})
+                }else{
+                    var updateWallet = await ETHMoment.update({
+                        count: tempCount+1,
+                        creations: tempCreations,
+                        tagged: tempTagged+1
+                    },{where:{address: addresses[i]}})
+                }
+
             }else{
-                sql = sql+arr[i]+")"
+
+                if(addresses[i] == creatorAddress)
+                {
+                    var uploadWallet = await ETHMoment.create({
+                        address: addresses[i],
+                        count: 1,
+                        creations: 1,
+                        tagged: 0
+                    })
+                }else{
+                    var uploadWallet = await ETHMoment.create({
+                        address: addresses[i],
+                        count: 1,
+                        creations: 0,
+                        tagged: 1
+                    })
+                }
+
+                
             }
+    
         }
 
-        var update = await db.sequelize.query(sql);
-        
-        res.send({message: "Success"})
+        res.send({message: "Success"});
 
     }else{
-        res.send({error: "Incorrect Payload"})
+        res.status(400).send({error: "No data"})
     }
+
+    
 
 }
