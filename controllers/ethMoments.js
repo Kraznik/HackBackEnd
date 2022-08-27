@@ -1,11 +1,12 @@
 var ETHMoment = require("../models").ETHMoment
+var User = require("../models").User
 
 var db  = require('../models')
 
 module.exports = async function(req,res)
 {
 
-    let {addresses, creatorAddress} = req.body.data;
+    let {addresses, creatorAddress} = req.body;
 
     if(!addresses || !creatorAddress)
     {
@@ -65,7 +66,40 @@ module.exports = async function(req,res)
     
         }
 
+        
+
+        var indexOfCreator = addresses.indexOf(creatorAddress);
+
+        if (indexOfCreator > -1) {
+            addresses.splice(indexOfCreator, 1);
+        }
+
+        var checkUser = await User.findAll({where:{
+            creator: creatorAddress
+        }});
+
+        if(checkUser.length)
+        {
+
+            var tempAddresses = checkUser[0].addresses;
+            var finalArray = tempAddresses.concat(addresses.filter((item) => tempAddresses.indexOf(item) < 0));
+            
+            var update = await User.update({
+                addresses: finalArray
+            },{where: {creator: creatorAddress}});
+
+
+
+        }else{
+            var upload = await User.create({
+                creator: creatorAddress,
+                addresses
+            })
+        };
+
         res.send({message: "Success"});
+        return;
+
 
     }else{
         res.status(400).send({error: "No data"})

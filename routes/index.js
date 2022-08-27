@@ -14,7 +14,9 @@ router.post(
   require("../controllers/mintMoments")
 );
 
-router.patch("/ethMoments", auth, require("../controllers/ethMoments.js"));
+router.post("/ethMoments", auth, require("../controllers/ethMoments.js"));
+
+router.get("/getAddress/:address", auth, require("../controllers/getAddress"))
 
 router.get(
   "/ethMomentsLeaderboard",
