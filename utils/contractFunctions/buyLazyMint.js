@@ -32,7 +32,7 @@ const buyLazyMint = async (nftTypeId, params, category) => {
   params.nftTypeDefinition.ipfsCid = array;
 
   try {
-    const url = `${config.dgApiUrl}/creation/artwork/${nftTypeId}`;
+    const url = `${config.dgApiBaseUrl}/creation/artwork/${nftTypeId}`;
     const { data } = await axios.get(url);
     var creatorSignature = data.saleSetting.signature;
   } catch (err) {
